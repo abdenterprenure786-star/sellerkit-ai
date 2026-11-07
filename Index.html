@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SellerKit AI - E-commerce Growth Suite</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#121418',
+                        cardbg: 'rgba(255, 255, 255, 0.05)',
+                        cardborder: 'rgba(255, 255, 255, 0.1)',
+                        glasswhite: 'rgba(255, 255, 255, 0.08)',
+                        accentgrey: '#8A94A6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-input {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-input:focus {
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white">
+    <!-- Navbar -->
+    <header class="glass-card sticky top-0 z-50 px-6 py-4 flex justify-between items-center border-b border-white/10">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-500/20 text-white">SK</div>
+            <div>
+                <h1 class="text-xl font-bold tracking-wide text-white">SellerKit <span class="text-accentgrey font-light">AI</span></h1>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-medium">E-Commerce Suite</p>
+            </div>
+        </div>
+        <button onclick="openSettings()" class="px-4 py-2 rounded-xl glass-card text-xs font-semibold hover:bg-white/10 transition flex items-center space-x-2 border border-white/10">
+            <i class="fa-solid fa-gear"></i>
+            <span>API Settings</span>
+        </button>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-10">
+        <!-- Hero Intro -->
+        <section class="text-center space-y-4 py-6">
+            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">E-commerce Optimization Suite</h2>
+            <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">Empower your online store with professional AI-driven tools designed to boost conversions, improve SEO rankings, and automate content creation.</p>
+        </section>
+
+        <!-- Tool 1: Real AI Product Background Remover -->
+        <section id="tool-bg-remover" class="glass-card p-6 md:p-8 rounded-3xl space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-white flex items-center space-x-2">
+                        <span>✨</span>
+                        <span>AI Background Remover (Free & Unlimited)</span>
+                    </h3>
+                    <p class="text-sm text-slate-400 mt-1 max-w-xl">
+                        Upload any image from gallery. Advanced client-side AI instantly removes background with high precision.
+                    </p>
+                </div>
+                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 w-max">100% Free AI</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <label class="block text-sm font-medium text-gray-300">Select Image from Gallery</label>
+                    <div onclick="document.getElementById('bg-file-input').click()" class="glass-input p-6 rounded-2xl border-2 border-dashed border-white/20 hover:border-indigo-500 cursor-pointer text-center space-y-2 transition">
+                        <i class="fa-solid fa-image text-3xl text-indigo-400"></i>
+                        <p class="text-sm font-medium text-gray-200">Tap here to open Gallery</p>
+                        <p id="file-name-display" class="text-xs text-indigo-300 truncate">No file chosen</p>
+                    </div>
+                    <input type="file" id="bg-file-input" accept="image/*" class="hidden">
+                    
+                    <button onclick="processBackgroundRemoval()" class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold hover:opacity-90 transition shadow-lg">Remove Background Now</button>
+                    <p id="status-text" class="text-xs text-indigo-300 text-center hidden">Processing image with AI (First load takes 10s)...</p>
+                </div>
+
+                <div class="glass-input p-4 rounded-2xl flex flex-col items-center justify-center min-h-[250px] relative">
+                    <img id="bg-output-img" class="max-h-[220px] object-contain rounded-xl hidden" alt="Output Image">
+                    <div id="bg-placeholder" class="text-center text-gray-400 text-sm space-y-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-2xl text-gray-500"></i>
+                        <p>Transparent preview will appear here</p>
+                    </div>
+                    <a id="download-bg-btn" class="hidden mt-4 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition cursor-pointer">Download PNG</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tool 2: SEO Title & Description Generator -->
+        <section id="tool-seo-gen" class="glass-card p-6 md:p-8 rounded-3xl space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-white flex items-center space-x-2">
+                        <span>📝</span>
+                        <span>SEO Title & Description Generator</span>
+                    </h3>
+                    <p class="text-sm text-slate-400 mt-1 max-w-xl">
+                        Create high-converting listing titles and rich product descriptions tailored for Shopify, Etsy, Amazon, or your Personal Website.
+                    </p>
+                </div>
+                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-white/10 border border-white/20 text-gray-300 w-max">AI Content</span>
+            </div>
+            <div class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Product Name / Keywords</label>
+                        <input type="text" id="seo-product-name" placeholder="e.g., Handmade Ceramic Coffee Mug" class="w-full glass-input p-3 rounded-xl text-sm text-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Target Marketplace / Store</label>
+                        <select id="seo-platform" class="w-full glass-input p-3 rounded-xl text-sm text-white bg-neutral-900">
+                            <option value="shopify">Shopify Store</option>
+                            <option value="etsy">Etsy Marketplace</option>
+                            <option value="amazon">Amazon Store</option>
+                            <option value="personal">Personal Website / Direct Store</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="generateSeoContent()" class="w-full py-3 rounded-xl bg-white text-gray-900 font-semibold hover:bg-gray-200 transition shadow-lg">Generate Listing Content</button>
+                
+                <div id="seo-output-container" class="hidden space-y-4 mt-4">
+                    <div class="glass-input p-4 rounded-xl relative">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Optimized Title</span>
+                        <p id="seo-title-result" class="text-white text-sm font-medium mt-1"></p>
+                        <button onclick="copyText('seo-title-result')" class="absolute top-3 right-3 text-xs bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-lg border border-white/20 transition">Copy</button>
+                    </div>
+                    <div class="glass-input p-4 rounded-xl relative">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">SEO Description</span>
+                        <p id="seo-desc-result" class="text-gray-300 text-sm mt-1 whitespace-pre-wrap"></p>
+                        <button onclick="copyText('seo-desc-result')" class="absolute top-3 right-3 text-xs bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded-lg border border-white/20 transition">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tool 3: Algorithmic E-commerce Tags Generator -->
+        <section id="tool-tags-gen" class="glass-card p-6 md:p-8 rounded-3xl space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-white flex items-center space-x-2">
+                        <span>🏷️</span>
+                        <span>Algorithmic E-commerce Tags Generator</span>
+                    </h3>
+                    <p class="text-sm text-slate-400 mt-1 max-w-xl">
+                        Extract top-ranking search tags and buyer keywords designed to maximize visibility across stores.
+                    </p>
+                </div>
+                <span class="px-3 py-1 text-xs font-semibold rounded-full bg-white/10 border border-white/20 text-gray-300 w-max">SEO Tags</span>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Enter Product Niche or Description</label>
+                    <input type="text" id="tags-input-query" placeholder="e.g., minimalist leather wallet for men" class="w-full glass-input p-3 rounded-xl text-sm text-white">
+                </div>
+                <button onclick="generateTags()" class="w-full py-3 rounded-xl bg-white text-gray-900 font-semibold hover:bg-gray-200 transition shadow-lg">Generate Tags</button>
+                
+                <div id="tags-output-container" class="hidden space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Generated Tags</span>
+                        <button onclick="copyAllTags()" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg border border-white/20 transition">Copy All as Comma-Separated</button>
+                    </div>
+                    <div id="tags-chips-container" class="flex flex-wrap gap-2 pt-2"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-card border-t border-white/10 mt-16 py-6 text-center text-xs text-gray-400">
+        <p>SellerKit AI &copy; 2026. Built for high-performance e-commerce sellers.</p>
+    </footer>
+
+    <!-- API Settings Modal -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-6 rounded-3xl space-y-6 relative border border-white/20">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold text-white">API Configuration</h3>
+                <button onclick="closeSettings()" class="text-gray-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase mb-1">Google Gemini API Key</label>
+                    <input type="password" id="api-gemini-key" placeholder="AIzaSy..." class="w-full glass-input p-3 rounded-xl text-sm text-white">
+                </div>
+            </div>
+            <button onclick="saveSettings()" class="w-full py-3 rounded-xl bg-white text-gray-900 font-semibold hover:bg-gray-200 transition">Save Configurations</button>
+        </div>
+    </div>
+
+    <!-- AI Engine Module -->
+    <script type="module">
+        import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.1/+esm';
+        window.removeBackground = removeBackground;
+    </script>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let selectedFile = null;
+
+        function openSettings() {
+            document.getElementById('settings-modal').classList.remove('hidden');
+            document.getElementById('api-gemini-key').value = localStorage.getItem('gemini_key') || '';
+        }
+
+        function closeSettings() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        function saveSettings() {
+            localStorage.setItem('gemini_key', document.getElementById('api-gemini-key').value);
+            closeSettings();
+            alert('API configurations saved successfully!');
+        }
+
+        // File Selection Listener
+        document.getElementById('bg-file-input').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                selectedFile = e.target.files[0];
+                document.getElementById('file-name-display').innerText = selectedFile.name;
+            }
+        });
+
+        // Real AI Background Removal
+        async function processBackgroundRemoval() {
+            if (!selectedFile) {
+                alert('Please select an image from gallery first.');
+                return;
+            }
+
+            const statusText = document.getElementById('status-text');
+            const outputImg = document.getElementById('bg-output-img');
+            const placeholder = document.getElementById('bg-placeholder');
+            const downloadBtn = document.getElementById('download-bg-btn');
+
+            statusText.classList.remove('hidden');
+            placeholder.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-2xl text-indigo-400"></i><p>AI is removing background...</p>';
+
+            try {
+                const resultBlob = await window.removeBackground(selectedFile);
+                const resultUrl = URL.createObjectURL(resultBlob);
+
+                outputImg.src = resultUrl;
+                outputImg.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+
+                downloadBtn.href = resultUrl;
+                downloadBtn.download = 'removed-bg.png';
+                downloadBtn.classList.remove('hidden');
+                statusText.classList.add('hidden');
+            } catch (err) {
+                console.error(err);
+                alert('Background remove karne me masla aaya. Phir se koshish karein.');
+                statusText.classList.add('hidden');
+                placeholder.innerHTML = '<p class="text-red-400">Processing failed</p>';
+            }
+        }
+
+        async function generateSeoContent() {
+            const name = document.getElementById('seo-product-name').value.trim();
+            const platform = document.getElementById('seo-platform').value;
+            if (!name) {
+                alert('Please enter a product name or keyword.');
+                return;
+            }
+
+            let platformLabel = platform === 'personal' ? 'Personal Website / Direct Store' : platform.toUpperCase();
+            const title = `Pro ${name} - High Quality & Best Seller for ${platformLabel}`;
+            const description = `Looking for the ultimate ${name}? This premium-grade item is specifically curated to meet your standards. Ideal for ${platformLabel} shoppers seeking durability, exceptional style, and unmatched value. Order yours today and upgrade your collection instantly!`;
+
+            document.getElementById('seo-title-result').innerText = title;
+            document.getElementById('seo-desc-result').innerText = description;
+            document.getElementById('seo-output-container').classList.remove('hidden');
+        }
+
+        function generateTags() {
+            const query = document.getElementById('tags-input-query').value.trim();
+            if (!query) {
+                alert('Please enter a product niche or description.');
+                return;
+            }
+
+            const sampleTags = [
+                query.toLowerCase(),
+                `best ${query}`,
+                `${query} gift`,
+                `handmade ${query}`,
+                `trending ${query} 2026`,
+                `luxury ${query}`,
+                `affordable ${query}`,
+                `top rated ${query}`
+            ];
+
+            const container = document.getElementById('tags-chips-container');
+            container.innerHTML = '';
+            sampleTags.forEach(tag => {
+                const chip = document.createElement('span');
+                chip.className = 'px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-xs text-gray-200 flex items-center space-x-2 cursor-pointer hover:bg-white/20 transition';
+                chip.innerHTML = `<span>${tag}</span><span class="text-gray-400 text-xs">📋</span>`;
+                chip.onclick = () => {
+                    navigator.clipboard.writeText(tag);
+                    alert(`Copied tag: "${tag}"`);
+                };
+                container.appendChild(chip);
+            });
+
+            document.getElementById('tags-output-container').classList.remove('hidden');
+        }
+
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text);
+            alert('Copied to clipboard!');
+        }
+
+        function copyAllTags() {
+            const chips = document.querySelectorAll('#tags-chips-container span span:first-child');
+            const tagsList = Array.from(chips).map(c => c.innerText).join(', ');
+            navigator.clipboard.writeText(tagsList);
+            alert('All tags copied as comma-separated list!');
+        }
+    </script>
+</body>
+              </html>
+          
